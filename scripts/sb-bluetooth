@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Show Bluetooth  if connected,  if no device is connected.
+
+case $BLOCK_BUTTON in
+    1) "$TERMINAL" -e bluetoothctl; pkill -RTMIN+4 dwmblocks ;;
+    3) notify-send " Bluetooth Module" "\
+- Click to open Bluetooth manager
+: Device connected
+: No device connected
+" ;;
+    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# Bluetooth
+bluetooth_status=$(bluetoothctl show | grep "Powered: yes")
+connected_device=$(bluetoothctl info | grep "Connected: yes")
+
+if [ -n "$bluetooth_status" ]; then
+    if [ -n "$connected_device" ]; then
+        bluetooth_icon=""
+    else
+        bluetooth_icon=""
+    fi
+else
+    bluetooth_icon=""
+fi
+
+printf "%s\n" "$bluetooth_icon "
+

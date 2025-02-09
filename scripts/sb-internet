@@ -28,6 +28,10 @@ fi
 [ "$(cat /sys/class/net/e*/operstate 2>/dev/null)" = 'up' ] && ethericon=$(printf "\ufbf1") || ethericon=$(printf "\uf65a")
 
 # TUN
-[ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon=$(printf " \uf997")
+#[ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon=$(printf " \uf997")
+if nmcli connection show --active | grep -qi 'proton0'; then
+	tunicon=$(printf " \uf997")
+fi
+
 
 printf "%s%s%s\n" "$wifiicon" "$ethericon" "$tunicon"
